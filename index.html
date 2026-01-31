@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Happy Anniversary ❤️</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  height:100vh;
+  font-family:'Segoe UI',sans-serif;
+  background:linear-gradient(135deg,#ff9a9e,#fad0c4);
+  overflow:hidden;
+  cursor:pointer;
+}
+
+/* FLOATING HEARTS */
+.heart{
+  position:absolute;
+  font-size:22px;
+  animation:float 6s linear forwards;
+}
+@keyframes float{
+  from{transform:translateY(100vh);opacity:1;}
+  to{transform:translateY(-120px);opacity:0;}
+}
+
+/* WELCOME SCREEN */
+#welcome{
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  color:white;
+}
+
+#welcome h1{
+  font-size:3em;
+  animation:pulse 1.6s infinite;
+}
+@keyframes pulse{50%{transform:scale(1.05);}}
+
+/* SCENE */
+#scene{
+  position:relative;
+  width:300px;
+  height:300px;
+  margin-top:20px;
+}
+
+/* Penguin */
+#penguin{
+  width:180px;
+  position:absolute;
+  bottom:0;
+  left:50%;
+  transform:translateX(-200px);
+  animation:walkIn 2s forwards;
+}
+@keyframes walkIn{to{transform:translateX(-50%);}}
+
+/* Gift */
+#gift{
+  width:100px;
+  position:absolute;
+  left:50%;
+  bottom:70px;
+  transform:translateX(-50%);
+  opacity:0;
+}
+.showGift{animation:fadeIn 1s forwards;}
+@keyframes fadeIn{to{opacity:1;}}
+.popGift{animation:pop 1.5s forwards;}
+@keyframes pop{
+  50%{transform:translateX(-50%) scale(1.5);}
+  100%{transform:translateX(-50%) scale(3);opacity:0;}
+}
+
+#hint{
+  margin-top:30px;
+  font-size:1.2em;
+  animation:blink 1.5s infinite;
+}
+@keyframes blink{50%{opacity:.5;}}
+
+/* SLIDES */
+#slides{display:none;height:100vh;}
+
+.slide{
+  display:none;
+  height:100vh;
+  position:relative;
+  background:#000;
+}
+.slide.active{display:block;}
+
+.slide img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+}
+
+/* Caption */
+.caption{
+  position:absolute;
+  bottom:40px;
+  width:100%;
+  text-align:center;
+  font-size:1.6em;
+  color:white;
+  text-shadow:2px 2px 12px black;
+}
+
+/* FINAL SLIDE */
+#final{
+  background:linear-gradient(135deg,#ff758c,#ff7eb3);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  color:white;
+  padding:30px;
+}
+
+#final h1{
+  font-size:3.5em;
+  margin-bottom:20px;
+  animation:love 1.8s infinite;
+}
+@keyframes love{50%{transform:scale(1.12);}}
+
+/* MUSIC BUTTON */
+#musicBtn{
+  position:fixed;
+  bottom:20px;
+  left:20px;
+  background:white;
+  border-radius:50%;
+  padding:15px;
+  font-size:22px;
+  z-index:10;
+}
+</style>
+</head>
+
+<body>
+
+<audio id="music" loop preload="auto">
+  <source src="Iloveyouso.mp3" type="audio/mpeg">
+</audio>
+
+<div id="musicBtn">🎵</div>
+
+<!-- WELCOME -->
+<div id="welcome">
+  <h1>Happy Anniversary 💖</h1>
+  <div id="scene">
+    <img src="pengu.gif" id="penguin">
+    <img src="giftbox.png" id="gift">
+  </div>
+  <div id="hint">Tap anywhere 💕</div>
+</div>
+
+<!-- SLIDES -->
+<div id="slides">
+  <div class="slide active"><img src="Slide1.jpg"><div class="caption">The day our story began ✨</div></div>
+  <div class="slide"><img src="Slide2.jpg"><div class="caption">Your smile feels like home 💖</div></div>
+  <div class="slide"><img src="Slide3.jpg"><div class="caption">Every laugh, every moment 🫶</div></div>
+
+  <!-- ✅ SLIDE 4 FIXED HERE -->
+  <div class="slide"><img src="Slide4.png"><div class="caption">Growing together, always 🌸</div></div>
+
+  <div class="slide"><img src="Slide5.jpg"><div class="caption">Love that feels effortless ❤️</div></div>
+  <div class="slide"><img src="Slide6.jpg"><div class="caption">You are my safe place 🤍</div></div>
+  <div class="slide"><img src="Slide7.jpg"><div class="caption">A thousand memories & more 💫</div></div>
+  <div class="slide"><img src="Slide8.jpg"><div class="caption">Still choosing you, every day 💍</div></div>
+  <div class="slide"><img src="Slide9.jpg"><div class="caption">Forever doesn’t feel long with you 💕</div></div>
+
+  <!-- FINAL -->
+  <div class="slide" id="final">
+    <h1>Forever, With You 💞</h1>
+    <p>
+      “Love isn’t about counting days,  
+      it’s about choosing each other — every single day.  
+      Today, tomorrow, and all our forever afters.”
+    </p>
+    <p style="margin-top:25px;font-size:1.2em;">
+      Happy Anniversary, my love 🌹
+    </p>
+  </div>
+</div>
+
+<script>
+let started=false;
+let slideIndex=0;
+let lock=false;
+
+const slides=document.querySelectorAll('.slide');
+const music=document.getElementById('music');
+const gift=document.getElementById('gift');
+const welcome=document.getElementById('welcome');
+const slidesContainer=document.getElementById('slides');
+
+/* Preload images */
+slides.forEach(s=>{
+  const img=s.querySelector('img');
+  if(img){const i=new Image();i.src=img.src;}
+});
+
+/* Floating hearts */
+setInterval(()=>{
+  const h=document.createElement('div');
+  h.className='heart';
+  h.innerText='💖';
+  h.style.left=Math.random()*100+'vw';
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),6000);
+},900);
+
+function playMusic(){
+  if(music.paused){
+    music.volume=0.5;
+    music.play().catch(()=>{});
+  }
+}
+
+document.body.addEventListener('click',()=>{
+  if(lock) return;
+  lock=true;
+  setTimeout(()=>lock=false,500);
+
+  if(!started){
+    started=true;
+    playMusic();
+    setTimeout(()=>gift.classList.add('showGift'),1500);
+    setTimeout(()=>gift.classList.add('popGift'),3000);
+    setTimeout(()=>{
+      welcome.style.display='none';
+      slidesContainer.style.display='block';
+    },4500);
+  }else{
+    slides[slideIndex].classList.remove('active');
+    slideIndex=Math.min(slideIndex+1,slides.length-1);
+    slides[slideIndex].classList.add('active');
+  }
+});
+
+document.getElementById('musicBtn').onclick=e=>{
+  e.stopPropagation();
+  music.paused?playMusic():music.pause();
+};
+</script>
+
+</body>
+  </html>
