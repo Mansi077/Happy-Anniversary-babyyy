@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -47,7 +47,7 @@ body{
 #scene{
   position:relative;
   width:300px;
-  height:300px;
+  height:340px;
   margin-top:20px;
 }
 
@@ -55,7 +55,7 @@ body{
 #penguin{
   width:180px;
   position:absolute;
-  bottom:0;
+  bottom:60px;
   left:50%;
   transform:translateX(-200px);
   animation:walkIn 2s forwards;
@@ -67,7 +67,7 @@ body{
   width:100px;
   position:absolute;
   left:50%;
-  bottom:70px;
+  bottom:110px;
   transform:translateX(-50%);
   opacity:0;
 }
@@ -79,8 +79,23 @@ body{
   100%{transform:translateX(-50%) scale(3);opacity:0;}
 }
 
+/* PLEASE WAIT TEXT */
+#wait{
+  position:absolute;
+  bottom:10px;
+  width:100%;
+  text-align:center;
+  font-size:1.1em;
+  opacity:0.85;
+  animation:softBlink 2s infinite;
+}
+@keyframes softBlink{
+  50%{opacity:0.4;}
+}
+
+/* TAP HINT */
 #hint{
-  margin-top:30px;
+  margin-top:10px;
   font-size:1.2em;
   animation:blink 1.5s infinite;
 }
@@ -158,10 +173,13 @@ body{
 <!-- WELCOME -->
 <div id="welcome">
   <h1>Happy Anniversary 💖</h1>
+
   <div id="scene">
     <img src="pengu.gif" id="penguin">
     <img src="giftbox.png" id="gift">
+    <div id="wait">Please wait… 💗</div>
   </div>
+
   <div id="hint">Tap anywhere 💕</div>
 </div>
 
@@ -170,17 +188,13 @@ body{
   <div class="slide active"><img src="Slide1.jpg"><div class="caption">The day our story began ✨</div></div>
   <div class="slide"><img src="Slide2.jpg"><div class="caption">Your smile feels like home 💖</div></div>
   <div class="slide"><img src="Slide3.jpg"><div class="caption">Every laugh, every moment 🫶</div></div>
-
-  <!-- ✅ SLIDE 4 FIXED HERE -->
   <div class="slide"><img src="Slide4.png"><div class="caption">Growing together, always 🌸</div></div>
-
   <div class="slide"><img src="Slide5.jpg"><div class="caption">Love that feels effortless ❤️</div></div>
   <div class="slide"><img src="Slide6.jpg"><div class="caption">You are my safe place 🤍</div></div>
   <div class="slide"><img src="Slide7.jpg"><div class="caption">A thousand memories & more 💫</div></div>
   <div class="slide"><img src="Slide8.jpg"><div class="caption">Still choosing you, every day 💍</div></div>
   <div class="slide"><img src="Slide9.jpg"><div class="caption">Forever doesn’t feel long with you 💕</div></div>
 
-  <!-- FINAL -->
   <div class="slide" id="final">
     <h1>Forever, With You 💞</h1>
     <p>
@@ -204,6 +218,7 @@ const music=document.getElementById('music');
 const gift=document.getElementById('gift');
 const welcome=document.getElementById('welcome');
 const slidesContainer=document.getElementById('slides');
+const waitMsg=document.getElementById('wait');
 
 /* Preload images */
 slides.forEach(s=>{
@@ -236,8 +251,14 @@ document.body.addEventListener('click',()=>{
   if(!started){
     started=true;
     playMusic();
-    setTimeout(()=>gift.classList.add('showGift'),1500);
+
+    setTimeout(()=>{
+      gift.classList.add('showGift');
+      waitMsg.style.display='none';
+    },1500);
+
     setTimeout(()=>gift.classList.add('popGift'),3000);
+
     setTimeout(()=>{
       welcome.style.display='none';
       slidesContainer.style.display='block';
@@ -256,4 +277,4 @@ document.getElementById('musicBtn').onclick=e=>{
 </script>
 
 </body>
-  </html>
+  </html>          
